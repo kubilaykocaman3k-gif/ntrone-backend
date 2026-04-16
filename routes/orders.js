@@ -1,0 +1,10 @@
+const express = require('express');
+const Order   = require('../models/other-models').Order;
+const { protect } = require('../middleware/auth');
+const router  = express.Router();
+router.use(protect);
+router.get('/',     async (req,res) => { try { const d=await Order.find().sort({createdAt:-1}); res.json({success:true,data:d}); } catch(e){res.status(500).json({success:false,message:e.message});} });
+router.post('/',    async (req,res) => { try { const d=await Order.create({...req.body,createdBy:req.user._id}); res.status(201).json({success:true,data:d}); } catch(e){res.status(400).json({success:false,message:e.message});} });
+router.put('/:id',  async (req,res) => { try { const d=await Order.findByIdAndUpdate(req.params.id,req.body,{new:true}); res.json({success:true,data:d}); } catch(e){res.status(400).json({success:false,message:e.message});} });
+router.delete('/:id',async(req,res) => { try { await Order.findByIdAndDelete(req.params.id); res.json({success:true}); } catch(e){res.status(500).json({success:false,message:e.message});} });
+module.exports = router;
