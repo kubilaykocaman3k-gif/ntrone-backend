@@ -30,16 +30,8 @@ const app = express();
 
 /* ── Middleware'ler ─────────────────────────── */
 
-/* CORS — Frontend'in backend'e istek atmasına izin ver */
-app.use(cors({
-  origin: [
-    process.env.CLIENT_URL,          // Netlify URL'niz
-    'http://localhost:3000',          // Yerel geliştirme
-    'http://localhost:5500',          // VS Code Live Server
-    'http://127.0.0.1:5500',
-  ],
-  credentials: true,
-}));
+/* CORS — Tüm kaynaklara izin ver (demo modu) */
+app.use(cors());
 
 /* JSON body okuma */
 app.use(express.json());
