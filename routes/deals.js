@@ -5,7 +5,7 @@ const express = require('express');
 const Deal    = require('../models/Deal');
 const { protect } = require('../middleware/auth');
 const router  = express.Router();
-// router.use(protect); // Login eklenince açın
+router.use(protect);
 
 router.get('/',     async (req, res) => {
   try {
@@ -18,7 +18,7 @@ router.get('/',     async (req, res) => {
 
 router.post('/',    async (req, res) => {
   try {
-    const deal = await Deal.create(req.body);
+    const deal = await Deal.create({ ...req.body, createdBy: req.user._id });
     res.status(201).json({ success: true, data: deal });
   } catch (err) { res.status(400).json({ success: false, message: err.message }); }
 });
