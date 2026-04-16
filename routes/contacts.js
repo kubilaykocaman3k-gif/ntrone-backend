@@ -16,8 +16,8 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Tüm route'lara auth middleware uygula
-router.use(protect);
+// NOT: Login sistemi eklenince aşağıdaki satırı açın:
+// router.use(protect);
 
 /* ── GET /api/contacts ────────────────────── */
 router.get('/', async (req, res) => {
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
 /* ── POST /api/contacts ───────────────────── */
 router.post('/', async (req, res) => {
   try {
-    const contact = await Contact.create({ ...req.body, createdBy: req.user._id });
+    const contact = await Contact.create(req.body);
     res.status(201).json({ success: true, data: contact });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
